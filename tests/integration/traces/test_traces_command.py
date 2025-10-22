@@ -136,7 +136,7 @@ class TestTracesCommand(TracesIntegBase):
         LOG.info("Invoking function %s", function_name)
         lambda_invoke_result = self.lambda_client.invoke(FunctionName=function_id)
         LOG.info("Lambda invoke result %s", lambda_invoke_result)
-        end_time = datetime.utcnow()
+        end_time = datetime.now(timezone.utc)
 
         cmd_list = self.get_traces_command_list(end_time=str(end_time))
         self._check_traces(cmd_list, expected_trace_output)

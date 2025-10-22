@@ -125,4 +125,4 @@ def is_version_check_overdue(last_version_check) -> bool:
         return True
 
     epoch_week_ago = datetime.now(timezone.utc) - timedelta(days=DELTA_DAYS)
-    return datetime.fromtimestamp(last_version_check, tz=timezone.utc) < epoch_week_ago
+    return datetime.fromtimestamp(last_version_check, timezone.utc) < epoch_week_ago

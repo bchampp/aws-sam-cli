@@ -10,7 +10,7 @@ import dateparser
 def timestamp_to_iso(timestamp):
     """
     Convert Unix Epoch Timestamp to ISO formatted time string:
-        Ex: 1234567890 -> 2018-07-05T03:09:43.842000
+        Ex: 1234567890 -> 2018-07-05T03:09:43.842000+00:00
 
     Parameters
     ----------
@@ -42,7 +42,7 @@ def to_datetime(timestamp):
     """
 
     timestamp_secs = int(timestamp) / 1000.0
-    return datetime.datetime.fromtimestamp(timestamp_secs, tz=datetime.timezone.utc)
+    return datetime.datetime.fromtimestamp(timestamp_secs, datetime.timezone.utc)
 
 
 def to_timestamp(some_time):
@@ -52,7 +52,7 @@ def to_timestamp(some_time):
     Parameters
     ----------
     some_time : datetime.datetime
-        Value to be converted to unix epoch. This must be without any timezone identifier
+        Value to be converted to unix epoch. Can be timezone-aware or naive.
 
     Returns
     -------
@@ -60,8 +60,13 @@ def to_timestamp(some_time):
         Unix timestamp of the given time
     """
 
-    # `total_seconds()` returns elaped microseconds as a float. Get just milliseconds and discard the rest.
-    epoch = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc if some_time.tzinfo else None)
+    # Handle timezone-aware datetimes
+    if some_time.tzinfo is not None:
+        epoch = datetime.datetime(1970, 1, 1, tzinfo=datetime.timezone.utc)
+    else:
+        epoch = datetime.datetime(1970, 1, 1)
+
+    # `total_seconds()` returns elapsed microseconds as a float. Get just milliseconds and discard the rest.
     return int((some_time - epoch).total_seconds() * 1000.0)
 
 

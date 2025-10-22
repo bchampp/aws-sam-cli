@@ -110,9 +110,8 @@ class Event:
         if not thread_id:
             thread_id = uuid4()
         self.thread_id = thread_id
-        self.time_stamp = str(datetime.now(timezone.utc))[
-            :-3
-        ]  # format microseconds from 6 -> 3 figures to allow SQL casting
+        # format microseconds from 6 -> 3 figures to allow SQL casting
+        self.time_stamp = str(datetime.now(timezone.utc))[:-3]
         self.exception_name = exception_name
 
     def __eq__(self, other):
